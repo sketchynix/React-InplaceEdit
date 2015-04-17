@@ -4,7 +4,6 @@ var React = require('react');
 
 var InPlace = React.createClass({
 	propTypes: {
-		//method or boolean?
 		permission: React.PropTypes.oneOfType([
   			React.PropTypes.bool,
   			React.PropTypes.func
@@ -42,21 +41,26 @@ var InPlace = React.createClass({
 	mouseUpHandler() {
  		this.state.mouseIsDownInComponent = false;
 	},
+	hasPermission(){
+		return (typeof this.props.permission === "function") ? this.props.permission() ? this.props.permission;
+	},
 	/**
 	 * Show the input and focus in on it
 	 */
 	showInput() {
-		this.setState({ inputVisible: !this.state.inputVisible }, function(){
-			React.findDOMNode(this.refs.inplaceInput).focus();
-			React.findDOMNode(this.refs.inplaceInput).select();
-		});
+		if(this.hasPermission()){
+			this.setState({ inputVisible: true }, function(){
+				React.findDOMNode(this.refs.inplaceInput).focus();
+				React.findDOMNode(this.refs.inplaceInput).select();
+			});
+		}
 	},
 	hideInput() {
 		this.setState({ inputVisible: false });
 	},
 	saveDraftToValue() {
 		//we specified the save property, if passed in, will be a function
-		if(this.props.permission && this.props.save){
+		if(this.hasPermission() && this.props.save){
 			this.props.save(this.state.draft);
 		} else {
 			//set the value--- this is immutable in theory
