@@ -9,7 +9,8 @@ var TestApp = React.createClass({
         buttons: [],
         permission: true,
         value: 'im here',
-        placeholder: 'placeholder test'
+        placeholder: 'placeholder test',
+        inputType: 'textarea'
       };
   },
   setValue(newValue) {

@@ -4,17 +4,17 @@ var React = require('react');
 
 var InPlace = React.createClass({
 	propTypes: {
+		value: React.PropTypes.string,
+		placeholder: React.PropTypes.string,
+		containerClass: React.PropTypes.string,
 		permission: React.PropTypes.oneOfType([
   			React.PropTypes.bool,
   			React.PropTypes.func
       	]),
-		value: React.PropTypes.string,
-		// inputType: React.PropTypes.string,
-		placeholder: React.PropTypes.string,
+		inputType: React.PropTypes.oneOf(['input', 'textarea']),
 		save: React.PropTypes.func,
 		updateOnChange: React.PropTypes.bool,
-		buttons: React.PropTypes.array,
-		containerClass: React.PropTypes.string
+		buttons: React.PropTypes.array
 	},
 	getInitialState() {
 		return {
@@ -42,7 +42,7 @@ var InPlace = React.createClass({
  		this.state.mouseIsDownInComponent = false;
 	},
 	hasPermission(){
-		return (typeof this.props.permission === "function") ? this.props.permission() ? this.props.permission;
+		return (typeof this.props.permission === "function") ? this.props.permission() : this.props.permission;
 	},
 	/**
 	 * Show the input and focus in on it
@@ -119,11 +119,22 @@ var InPlace = React.createClass({
 
 		let editTemplate = this.state.inputVisible ? '' : valueOrPlaceholderTemplate;
 
-		let isEditing = !this.state.inputVisible ? '' :
-			<div onKeyPress={this.onKeyPress}>
-				<input type="text" defaultValue={this.state.draft}
+		/**
+		 * Are we using an input box or textarea
+		 * @type {template}
+		 */
+		let inputTemplate = this.props.inputType === 'textarea' ?
+			<textarea defaultValue={this.state.draft}
 					onPaste={this.saveOnChange}
 					onChange={this.saveOnChange} ref="inplaceInput"  />
+					:
+			<input type="text" defaultValue={this.state.draft}
+					onPaste={this.saveOnChange}
+					onChange={this.saveOnChange} ref="inplaceInput"  />
+
+		let isEditing = !this.state.inputVisible ? '' :
+			<div onKeyPress={this.onKeyPress}>
+				{inputTemplate}
 				<div>
 					<button onClick={this.save}>Save</button>
 					<button onClick={this.cancelEdit}>Cancel</button>
