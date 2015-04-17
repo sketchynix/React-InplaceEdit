@@ -10,7 +10,7 @@ var TestApp = React.createClass({
         permission: true,
         value: 'im here',
         placeholder: 'placeholder test',
-        inputType: 'textarea'
+        fieldType: 'textarea'
       };
   },
   setValue(newValue) {

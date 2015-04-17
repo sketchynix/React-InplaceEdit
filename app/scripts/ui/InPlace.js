@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var _ = require('lodash');
 
 var InPlace = React.createClass({
 	propTypes: {
@@ -11,7 +12,7 @@ var InPlace = React.createClass({
   			React.PropTypes.bool,
   			React.PropTypes.func
       	]),
-		inputType: React.PropTypes.oneOf(['input', 'textarea']),
+		fieldType: React.PropTypes.oneOf(['input', 'textarea']),
 		save: React.PropTypes.func,
 		updateOnChange: React.PropTypes.bool,
 		buttons: React.PropTypes.array
@@ -78,7 +79,6 @@ var InPlace = React.createClass({
 		if(this.props.updateOnChange){
 			this.saveDraftToValue();
 		}
-
 	},
 	save(){
 		this.saveDraft();
@@ -91,7 +91,7 @@ var InPlace = React.createClass({
 		this.hideInput();
 	},
 	onKeyPress(event){
-		if(event.keyCode === 13 || event.which === 13){
+		if(event.keyCode === 13 || event.which === 13 && this.props.fieldType !== 'textarea'){
 			this.save();
 		}
 	},
@@ -123,13 +123,15 @@ var InPlace = React.createClass({
 		 * Are we using an input box or textarea
 		 * @type {template}
 		 */
-		let inputTemplate = this.props.inputType === 'textarea' ?
+		let inputTemplate = this.props.fieldType === 'textarea' ?
 			<textarea defaultValue={this.state.draft}
 					onPaste={this.saveOnChange}
+					onBlur={this.saveOnChange}
 					onChange={this.saveOnChange} ref="inplaceInput"  />
 					:
 			<input type="text" defaultValue={this.state.draft}
 					onPaste={this.saveOnChange}
+					onBlur={this.saveOnChange}
 					onChange={this.saveOnChange} ref="inplaceInput"  />
 
 		let isEditing = !this.state.inputVisible ? '' :
@@ -142,7 +144,7 @@ var InPlace = React.createClass({
 				</div>
 			</div>;
 
-		return <div className={containerClassName} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}>
+		return <div className={containerClassName} onMouseDown={this.mouseDownHandler} onMouseUp={this.mouseUpHandler}>
 			{editTemplate}
 			{isEditing}
 		</div>
