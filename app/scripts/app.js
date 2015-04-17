@@ -4,24 +4,24 @@ var React = window.React = require('react'),
 
 var TestApp = React.createClass({
     getInitialState() {
-            return {
-                buttons: [],
-                permission: true,
-                value: 'im here',
-                placeholder: 'placeholder test',
-                fieldType: 'textarea'
-            };
-        },
-        setValue(newValue) {
-            this.setState({
-                value: newValue
-            });
-        },
-        render() {
-            return (<div>
-                <InPlace {...this.state} save={this.setValue} />
-            </div>);
-        }
+        return {
+            buttons: [],
+            permission: true,
+            value: 'im here',
+            placeholder: 'placeholder test',
+            fieldType: 'textarea'
+        };
+    },
+    setValue(newValue) {
+        this.setState({
+            value: newValue
+        });
+    },
+    render() {
+        return (<div>
+            <InPlace {...this.state} save={this.setValue} />
+        </div>);
+    }
 });
 
 React.render(<TestApp /> , mountNode);
