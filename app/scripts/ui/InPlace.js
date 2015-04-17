@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react');
-var _ = require('lodash');
 
 var InPlace = React.createClass({
 	propTypes: {
@@ -13,6 +12,7 @@ var InPlace = React.createClass({
   			React.PropTypes.func
       	]),
 		fieldType: React.PropTypes.oneOf(['input', 'textarea']),
+		inputType: React.PropTypes.string,
 		save: React.PropTypes.func,
 		updateOnChange: React.PropTypes.bool,
 		buttons: React.PropTypes.array
@@ -107,6 +107,7 @@ var InPlace = React.createClass({
 			return <button onClick={button.action} className={button.cssClass}>{button.text}</button>
 		});
 
+		let inputType = this.props.inputType ? this.props.inputType : 'text';
 		/**
 		 * Set the classname to use on the container
 		 * @type {string}
@@ -129,7 +130,7 @@ var InPlace = React.createClass({
 					onBlur={this.saveOnChange}
 					onChange={this.saveOnChange} ref="inplaceInput"  />
 					:
-			<input type="text" defaultValue={this.state.draft}
+			<input type={inputType} defaultValue={this.state.draft}
 					onPaste={this.saveOnChange}
 					onBlur={this.saveOnChange}
 					onChange={this.saveOnChange} ref="inplaceInput"  />
