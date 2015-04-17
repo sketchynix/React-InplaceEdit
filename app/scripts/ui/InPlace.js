@@ -24,10 +24,13 @@ var InPlace = React.createClass({
 			mouseIsDownInComponent: false
 		};
 	},
-	componentDidMount(){
-  		window.addEventListener("mousedown", this.pageClick, false);
+	componentDidMount() {
+  		window.addEventListener('mousedown', this.pageClick, false);
 	},
-	pageClick(event){
+	componentWillUnmount() {
+		window.removeEventListener('mousedown', this.pageClick)
+	},
+	pageClick (event) {
 		if (!this.state.mouseIsDownInComponent && this.state.inputVisible){
 			this.saveDraft();
 			this.hideInput();
