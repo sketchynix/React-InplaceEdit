@@ -4,22 +4,24 @@ var React = window.React = require('react'),
     mountNode = document.getElementById("app");
 
 var TestApp = React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {
         buttons: [],
-        text: '',
-        permission: true
+        permission: true,
+        value: 'im here',
+        placeholder: 'placeholder test'
       };
   },
-  render: function() {
+  setValue(newValue) {
+    this.setState({ value: newValue });
+  },
+  render() {
     return (
       <div>
-        <InPlace placeholder="test" permission={this.state.permission} />
+        <InPlace {...this.state} save={this.setValue} />
       </div>
     );
   }
 });
 
-
 React.render(<TestApp />, mountNode);
-
